@@ -35,4 +35,3 @@ steps:
     targetPath: 'out'
     artifact: $(artifactName)
     publishLocation: 'pipeline'
-
