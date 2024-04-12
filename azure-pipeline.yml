@@ -1,0 +1,38 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  ARTIFACT_NAME: 'C-Build-Test-$(Build.BuildId)'
+
+steps:
+- script: |
+    echo "Installing CMake"
+    sudo apt update
+    sudo apt upgrade -y
+    sudo apt install -y cmake
+  displayName: 'Install dependencies'
+
+- script: |
+    echo "Configuring CMake"
+    cmake .
+  displayName: 'Pre-build step'
+
+- script: |
+    echo "Building the project"
+    make
+  displayName: 'Build'
+
+- script: |
+    echo "Running tests"
+    ctest
+  displayName: 'Post-build step'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '/tmp/lib'
+    ArtifactName: $(ARTIFACT_NAME)
+    publishLocation: 'container'
+
