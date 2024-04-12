@@ -5,7 +5,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  ARTIFACT_NAME: 'C-Build-Test-$(Build.BuildId)'
+  artifactName: 'C-Build-Test-$(Build.BuildId)'
 
 steps:
 - script: |
@@ -30,9 +30,9 @@ steps:
     ctest
   displayName: 'Post-build step'
 
-- task: PublishBuildArtifacts@1
+- task: PublishPipelineArtifact@1
   inputs:
-    PathtoPublish: '/tmp/lib'
-    ArtifactName: $(ARTIFACT_NAME)
-    publishLocation: 'container'
+    targetPath: '/out'
+    artifact: $(artifactName)
+    publishLocation: 'pipeline'
 
